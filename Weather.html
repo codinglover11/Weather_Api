@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+ <link rel="stylesheet" href="Weather.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="main_container">
+        <div class="main_box">
+            <div class="search_bar">
+              
+                <input type="text" id="inp" placeholder="Search your city...">
+                <button class="getwth">Get Data</button>
+            </div>
+            <div class="city_infor">
+                <h4 class="country"></h4>
+                <p class="date"></p>
+                <button id="btn">Clear</button>
+            </div>
+            <div class="city_weather_img">
+                <img src="https://th.bing.com/th/id/R.88a11d66c546c713c784a03da49d601e?rik=YOPXHbO08qeY3g&riu=http%3a%2f%2fpluspng.com%2fimg-png%2fsun-png-clear-background-sunshine-sun-clip-art-with-transparent-background-free-2361.png&ehk=jFll%2b5pCHXclYR2g%2fp7p8z5F0X8kRCTua4XUeYt3Q78%3d&risl=&pid=ImgRaw&r=0" width="100rem" height="80rem" alt="Image not supported on your server" id="image">
+            </div>
+            <div class="city_temp">
+               
+                <h3 class="wind_speed">298</h3>
+                <p class="min_max">Min:298*  MIn:298*</p>
+            </div> 
+        </div>
+    </div>
+    <script>
+        imgs=document.getElementById("image");
+        inp=document.getElementById("inp");
+        
+        getdata=document.querySelector(".getwth");
+        getcount=document.querySelector(".country");
+        getcount.textContent="Jaipur,India";
+        date=document.querySelector(".date");
+        butt=document.getElementById("btn");
+        date.textContent= new Date();
+        speed=document.querySelector(".wind_speed");
+        getinfor=async()=>{
+           let city=inp.value.trim();
+           if(city==""){
+            window.alert("Enter city name");
+            return;
+           }
+          const urls= `http://api.weatherapi.com/v1/current.json?key=99270c1598864254906183307252901&q=${city}&aqi=yes`;
+
+    try{
+const res=await fetch(urls);
+const data=await res.json();
+console.log(data);
+const {location,current,condition,airquality}=data;
+getcount.textContent=`${location.name},${location.country}`;
+date.textContent=`${location.localtime}`;
+butt.textContent=`${current.condition.text}`;
+imgs.src=`${current.condition.icon}`;
+speed.textContent=`${current.airquality.co}`;
+    }catch(error){
+console.log(error);
+    }
+    
+        }
+        
+        getdata.addEventListener("click",getinfor);
+        
+    </script>
+</body>
+</html>
